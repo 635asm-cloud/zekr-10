@@ -1,0 +1,25 @@
+name: Sync to Second Account
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  git-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Push to Second Repo
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          
+          # ملاحظة: استبدل "اسم_حسابك_الثاني" فقط بالاسم الحقيقي لحسابك الآخر
+          git remote add destination https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/asm2410/zekr.git
+          
+          git push --force destination main
